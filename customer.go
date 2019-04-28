@@ -5,6 +5,8 @@ import (
 	"net/http"
 )
 
+const endpoint = "/customers"
+
 // Customer struct represents the information of the customer
 type Customer struct {
 	ID     string `json:"id"`
@@ -39,14 +41,16 @@ func (c *Customer) sendResp(resp *http.Response, err error) (*Customer, error) {
 	return newCust, parseError
 }
 
+// Create method will try to create a customer on razorpay
 func (c *Customer) Create(params *CustomerParams, client *Client) (*Customer, error) {
 	var body, _ = json.Marshal(params)
-	resp, err := client.Post("/customers", body)
+	resp, err := client.Post(endpoint, body)
 
 	return c.sendResp(resp, err)
 }
 
+// FindOne tries to find the customer with given id
 func (c *Customer) FindOne(id string, client *Client) (*Customer, error) {
-	resp, err := client.Get("/customers/" + id)
+	resp, err := client.Get(endpoint + "/" + id)
 	return c.sendResp(resp, err)
 }
