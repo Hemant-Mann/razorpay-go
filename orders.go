@@ -16,6 +16,9 @@ type Order struct {
 
 	Notes     map[string]string `json:"notes,omitempty"`
 	CreatedAt int               `json:"created_at"`
+
+	AmountPaid int64 `json:"amount_paid"`
+	AmountDue  int64 `json:"amount_due"`
 }
 
 // OrderParams struct represents the information to create a order
