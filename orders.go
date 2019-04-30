@@ -8,7 +8,7 @@ import (
 type Order struct {
 	ID       string `json:"id"`
 	Entity   string `json:"entity"`
-	Amount   int    `json:"amount"`
+	Amount   int64  `json:"amount"`
 	Currency string `json:"currency"`
 	Receipt  string `json:"receipt"`
 	Status   string `json:"status"`
@@ -20,7 +20,7 @@ type Order struct {
 
 // OrderParams struct represents the information to create a order
 type OrderParams struct {
-	Amount   int    `json:"amount"`
+	Amount   int64  `json:"amount"`
 	Currency string `json:"currency"`
 	Receipt  string `json:"receipt"`
 
