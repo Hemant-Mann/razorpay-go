@@ -2,7 +2,6 @@ package razorpay
 
 import (
 	"encoding/json"
-	"net/http"
 )
 
 // Order struct represents the information of the order
@@ -30,29 +29,28 @@ type OrderParams struct {
 	Notes map[string]string `json:"notes"`
 }
 
-func (c *Order) sendResp(resp *http.Response, err error) (*Order, error) {
-	var newCust = &Order{}
-	if err != nil {
-		return newCust, err
-	}
-	body, readErr := readBody(resp)
-	if readErr != nil {
-		return newCust, readErr
-	}
-	parseError := json.Unmarshal(body, newCust)
-	return newCust, parseError
+func (o *Order) New() Resource {
+	var obj = &Order{}
+	return obj
+}
+
+func (o *Order) Endpoint() string {
+	return "/orders"
 }
 
 // Create method will try to create a order on razorpay
-func (c *Order) Create(params *OrderParams, client *Client) (*Order, error) {
+func (o *Order) Create(params *OrderParams, client *Client) (*Order, error) {
 	var body, _ = json.Marshal(params)
-	resp, err := client.Post("/orders", body)
+	resp, err := client.Post(o.Endpoint(), body)
 
-	return c.sendResp(resp, err)
+	or, err := sendResp(resp, err, o)
+	return or.(*Order), err
 }
 
 // FindOne tries to find the order with given id
-func (c *Order) FindOne(id string, client *Client) (*Order, error) {
-	resp, err := client.Get("/orders/" + id)
-	return c.sendResp(resp, err)
+func (o *Order) FindOne(id string, client *Client) (*Order, error) {
+	resp, err := client.Get(o.Endpoint() + "/" + id)
+
+	or, err := sendResp(resp, err, o)
+	return or.(*Order), err
 }

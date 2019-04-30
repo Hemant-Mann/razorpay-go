@@ -2,6 +2,7 @@ package razorpay
 
 import (
 	"bytes"
+	"encoding/json"
 	"io/ioutil"
 	"net/http"
 	"time"
@@ -16,6 +17,25 @@ type Client struct {
 	Secret string
 
 	httpClient *http.Client
+}
+
+// Resource interface is to be used for generic decoding of object
+type Resource interface {
+	New() Resource
+	Endpoint() string
+}
+
+func sendResp(resp *http.Response, err error, rs Resource) (Resource, error) {
+	var newResource = rs.New()
+	if err != nil {
+		return newResource, err
+	}
+	body, readErr := readBody(resp)
+	if readErr != nil {
+		return newResource, readErr
+	}
+	parseError := json.Unmarshal(body, newResource)
+	return newResource, parseError
 }
 
 // NewClient returns a pointer to the razorpay client
