@@ -14,7 +14,7 @@ type Order struct {
 	Status   string `json:"status"`
 	Attempts int    `json:"attempts"`
 
-	Notes     map[string]string `json:"notes"`
+	Notes     map[string]string `json:"notes,omitempty"`
 	CreatedAt int               `json:"created_at"`
 }
 
@@ -29,11 +29,13 @@ type OrderParams struct {
 	Notes map[string]string `json:"notes"`
 }
 
+// New method will create a order object and return a pointer to it
 func (o *Order) New() Resource {
 	var obj = &Order{}
 	return obj
 }
 
+// Endpoint method returns the endpoint of the resource
 func (o *Order) Endpoint() string {
 	return "/orders"
 }

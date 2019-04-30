@@ -12,7 +12,7 @@ type Customer struct {
 	Email  string `json:"email"`
 	// Contact number of the customer
 	Contact   string            `json:"contact"`
-	Notes     map[string]string `json:"notes"`
+	Notes     map[string]string `json:"notes,omitempty"`
 	CreatedAt int               `json:"created_at"`
 }
 
@@ -23,13 +23,17 @@ type CustomerParams struct {
 	// Contact number of the customer
 	Contact string            `json:"contact"`
 	Notes   map[string]string `json:"notes"`
+
+	FailExisting string `json:"fail_existing"`
 }
 
+// New method will create a customer object and return a pointer to it
 func (c *Customer) New() Resource {
 	var obj = &Customer{}
 	return obj
 }
 
+// Endpoint method returns the endpoint of the resource
 func (c *Customer) Endpoint() string {
 	return "/customers"
 }
@@ -37,7 +41,7 @@ func (c *Customer) Endpoint() string {
 // Create method will try to create a customer on razorpay
 func (c *Customer) Create(params *CustomerParams, client *Client) (*Customer, error) {
 	var body, _ = json.Marshal(params)
-	resp, err := client.Post("/customers", body)
+	resp, err := client.Post(c.Endpoint(), body)
 
 	cust, err := sendResp(resp, err, c)
 	return cust.(*Customer), err
@@ -45,7 +49,7 @@ func (c *Customer) Create(params *CustomerParams, client *Client) (*Customer, er
 
 // FindOne tries to find the customer with given id
 func (c *Customer) FindOne(id string, client *Client) (*Customer, error) {
-	resp, err := client.Get("/customers/" + id)
+	resp, err := client.Get(c.Endpoint() + "/" + id)
 	cust, err := sendResp(resp, err, c)
 	return cust.(*Customer), err
 }

@@ -25,19 +25,6 @@ type Resource interface {
 	Endpoint() string
 }
 
-func sendResp(resp *http.Response, err error, rs Resource) (Resource, error) {
-	var newResource = rs.New()
-	if err != nil {
-		return newResource, err
-	}
-	body, readErr := readBody(resp)
-	if readErr != nil {
-		return newResource, readErr
-	}
-	parseError := json.Unmarshal(body, newResource)
-	return newResource, parseError
-}
-
 // NewClient returns a pointer to the razorpay client
 func NewClient(key, secret string) *Client {
 	var c = &Client{
@@ -53,6 +40,19 @@ func getHTTPClient(timeout int) *http.Client {
 		Timeout: time.Duration(timeout) * time.Second,
 	}
 	return httpClient
+}
+
+func sendResp(resp *http.Response, err error, rs Resource) (Resource, error) {
+	var newResource = rs.New()
+	if err != nil {
+		return newResource, err
+	}
+	body, readErr := readBody(resp)
+	if readErr != nil {
+		return newResource, readErr
+	}
+	parseError := json.Unmarshal(body, newResource)
+	return newResource, parseError
 }
 
 func readBody(resp *http.Response) ([]byte, error) {
