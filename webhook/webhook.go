@@ -12,10 +12,15 @@ type orderEntity struct {
 	Entity razorpay.Order `json:"entity"`
 }
 
+type vaEntity struct {
+	Entity razorpay.VirtualAccount `json:"entity"`
+}
+
 // Payload struct contains the payload data for the webhook
 type Payload struct {
-	Payment paymentEntity `json:"payment"`
-	Order   orderEntity   `json:"order"`
+	Payment        paymentEntity `json:"payment"`
+	Order          orderEntity   `json:"order"`
+	VirtualAccount vaEntity      `json:"virtual_account"`
 }
 
 // Webhook struct contains the webhook data sent by razorpay
