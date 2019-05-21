@@ -83,7 +83,8 @@ func (c *Client) makeRequest(method, path string, body *bytes.Buffer, headers ma
 
 // Get method makes a GET request to the resource
 func (c *Client) Get(path string) (*http.Response, error) {
-	return c.makeRequest("GET", path, nil, nil)
+	var body = ""
+	return c.makeRequest("GET", path, bytes.NewBuffer([]byte(body)), nil)
 }
 
 // Post method makes a POST and sends data in json format
@@ -100,4 +101,12 @@ func (c *Client) Delete(path string, body []byte) (*http.Response, error) {
 		"Content-Type": "application/json",
 	}
 	return c.makeRequest("DELETE", path, bytes.NewBuffer(body), headers)
+}
+
+// Patch method makes a PATCH and sends data in json format
+func (c *Client) Patch(path string, body []byte) (*http.Response, error) {
+	headers := map[string]string{
+		"Content-Type": "application/json",
+	}
+	return c.makeRequest("PATCH", path, bytes.NewBuffer(body), headers)
 }
