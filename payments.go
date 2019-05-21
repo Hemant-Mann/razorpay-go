@@ -20,10 +20,10 @@ type Payment struct {
 	Email          string `json:"email"`
 	Contact        string `json:"contact"`
 
-	Notes     map[string]string `json:"notes,omitempty"`
-	Fee       int64             `json:"fee"`
-	Tax       int64             `json:"tax"`
-	CreatedAt int               `json:"created_at"`
+	Notes     interface{} `json:"notes,omitempty"`
+	Fee       int64       `json:"fee"`
+	Tax       int64       `json:"tax"`
+	CreatedAt int         `json:"created_at"`
 
 	AmountPaid int64 `json:"amount_paid"`
 	AmountDue  int64 `json:"amount_due"`
@@ -49,6 +49,16 @@ func (p *Payment) New() Resource {
 // Endpoint method returns the endpoint of the resource
 func (p *Payment) Endpoint() string {
 	return "/payments"
+}
+
+// GetNotes function is used to return a map of the notes
+func (p *Payment) GetNotes() map[string]string {
+	var resultMap = make(map[string]string)
+	switch notes := p.Notes.(type) {
+	case map[string]string:
+		resultMap = notes
+	}
+	return resultMap
 }
 
 // FindOne tries to find the payment with given id
