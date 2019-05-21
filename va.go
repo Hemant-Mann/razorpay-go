@@ -56,6 +56,16 @@ func (va *VirtualAccount) Endpoint() string {
 	return "/virtual_accounts"
 }
 
+// GetNotes function is used to return a map of the notes
+func (va *VirtualAccount) GetNotes() map[string]string {
+	var resultMap = make(map[string]string)
+	switch notes := va.Notes.(type) {
+	case map[string]string:
+		resultMap = notes
+	}
+	return resultMap
+}
+
 // Create method will try to create a customer on razorpay
 func (va *VirtualAccount) Create(params *VirtualAccountParams, client *Client) (*VirtualAccount, error) {
 	var body, _ = json.Marshal(params)
