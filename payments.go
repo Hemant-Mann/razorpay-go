@@ -1,5 +1,9 @@
 package razorpay
 
+import (
+	"encoding/json"
+)
+
 // Payment struct represents the information of the payment
 type Payment struct {
 	ID             string `json:"id"`
@@ -54,10 +58,8 @@ func (p *Payment) Endpoint() string {
 // GetNotes function is used to return a map of the notes
 func (p *Payment) GetNotes() map[string]string {
 	var resultMap = make(map[string]string)
-	switch notes := p.Notes.(type) {
-	case map[string]string:
-		resultMap = notes
-	}
+	var jsonBytes, _ = json.Marshal(p.Notes)
+	json.Unmarshal(jsonBytes, &resultMap)
 	return resultMap
 }
 

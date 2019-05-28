@@ -59,10 +59,8 @@ func (va *VirtualAccount) Endpoint() string {
 // GetNotes function is used to return a map of the notes
 func (va *VirtualAccount) GetNotes() map[string]string {
 	var resultMap = make(map[string]string)
-	switch notes := va.Notes.(type) {
-	case map[string]string:
-		resultMap = notes
-	}
+	var jsonBytes, _ = json.Marshal(va.Notes)
+	json.Unmarshal(jsonBytes, &resultMap)
 	return resultMap
 }
 
