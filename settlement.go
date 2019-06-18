@@ -9,7 +9,7 @@ type Settlement struct {
 	Fees      int64  `json:"fees"`
 	Tax       int64  `json:"tax"`
 	UTR       string `json:"utr"`
-	CreatedAt int    `json:"created_at"`
+	CreatedAt int64  `json:"created_at"`
 }
 
 // New method will create a settlement object and return a pointer to it
