@@ -17,7 +17,7 @@ type vaEntity struct {
 }
 
 type settlementEntity struct {
-	Entity razorpay.Settlement `json:"settlement"`
+	Entity razorpay.Settlement `json:"entity"`
 }
 
 // Payload struct contains the payload data for the webhook
